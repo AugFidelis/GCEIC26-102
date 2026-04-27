@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main 
-      
+    paths:
+      - 'teste/**'   # só executa se push no diretorio teste  
 
 jobs:
   info:
