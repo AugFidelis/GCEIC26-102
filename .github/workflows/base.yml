@@ -1,0 +1,11 @@
+name: Base para o projeto
+
+on: [push]
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lista diretorio
+        run: ls -la
+        
