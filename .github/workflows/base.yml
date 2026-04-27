@@ -1,6 +1,10 @@
 name: Base para o projeto
 
-on: [push]
+on: 
+  push:
+    branches:
+      - main 
+      
 
 jobs:
   info:
