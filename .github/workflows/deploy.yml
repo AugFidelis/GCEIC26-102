@@ -103,7 +103,7 @@ jobs:
     if: success()    
     runs-on: ubuntu-latest
     outputs:
-      dep_api: ${{ steps.changes.outputs.dep_api }}
+      dep_api: ${{ steps.set-output.outputs.dep_api }}
     steps:
       - name: Deploy_Project_API
         id: Deploy_Project_API
@@ -166,8 +166,8 @@ jobs:
 
         
   deploy-app:
-    needs: deploy-api
-    if: success()    
+    needs: unitTestApi
+    if: success()       
     runs-on: ubuntu-latest
     outputs:
       dep_app: ${{ steps.set-output.outputs.dep_app }}
@@ -262,3 +262,11 @@ jobs:
           # path: /home/runner/work//aula_teste_101/aula_teste_101/e2e-tests/screenshots/**/*.png
           path: /home/runner/work//GCEIC26-102/GCEIC26-102/e2e-tests/screenshots/*.png
 
+ teste_funcional2:
+    needs: [deploy-api, deploy-app]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instala as to
+        run: |
+          echo "dep_api = ${{ needs.deploy-api.outputs.dep_api }}"
+          echo "dep_app = ${{ needs.deploy-app.outputs.dep_app }}"
