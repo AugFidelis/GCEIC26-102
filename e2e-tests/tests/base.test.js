@@ -2,6 +2,7 @@ const { Builder, By, until, Key } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const fs = require('fs');
 const path = require('path');
+const runExgTests = require('./exg/exg-all-screens.test.js');
 
 const BASE_URL = process.env.APP_URL || 'http://localhost:3000';
 const SCREENSHOTS_DIR = path.join(__dirname, '..', 'screenshots');
@@ -55,13 +56,14 @@ async function main() {
       tiraFoto("Submit form com erro");
 
       const errMsg = await driver.findElement(By.css('.erro')).getText();
-      if (!errMsg.includes('inválidos')) throw new Error(`Falhou : ${errMsg}`);
-
+      if (!errMsg.includes('inválidos') && !errMsg.includes('invalidos')) throw new Error(`Falhou : ${errMsg}`);
 
     } finally {
         if (driver) await driver.quit();
     }
 
+    console.log('\n--- Iniciando testes do EXG ---');
+    await runExgTests();
 }
 
 main().catch( err => { 
