@@ -1,6 +1,7 @@
 const express = require('express');
 const cors    = require('cors');
 const helmet  = require('helmet');
+const exgRouter = require('./exg/exgApp');
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.json());
 
 // checa se api no ar
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() , by:'SLMM40', turma:'101'});
+  res.json({ status: 'ok', timestamp: new Date().toISOString() , by:'SLMM28', turma:'101'});
 });
 
 app.get('/api/tabelas', (req, res) => {
@@ -45,6 +46,8 @@ app.post('/api/calcular', (req, res) => {
     return res.status(400).json({ success: false, error: err.message });
   }
 });
+
+app.use('/api/exg', exgRouter);
 
 module.exports = app
 
