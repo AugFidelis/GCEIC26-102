@@ -21,9 +21,12 @@ function startMockCddApi() {
       return resolve(null);
     }
 
+    // Permite apenas a origem da app sob teste, não qualquer origem
+    const appOrigin = new URL(BASE_URL).origin;
+
     const server = http.createServer((req, res) => {
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+      res.setHeader("Access-Control-Allow-Origin", appOrigin);
+      res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "Content-Type");
       res.setHeader("Access-Control-Allow-Private-Network", "true");
 
@@ -46,10 +49,7 @@ function startMockCddApi() {
             json(data) {
               if (sent) return;
               sent = true;
-              res.writeHead(this._status, {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-              });
+              res.writeHead(this._status, { "Content-Type": "application/json" });
               res.end(JSON.stringify(data));
             },
           };
