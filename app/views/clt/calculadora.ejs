@@ -9,7 +9,16 @@
 <body>
   <%- include('nav') %>
   <main class="page-content">
-    <h1 class="page-title">Simulador de custo CLT</h1>
+    <section class="calc-hero">
+      <div>
+        <span class="eyebrow">Calculadora empresarial</span>
+        <h1 class="page-title">Simulador de custo CLT</h1>
+        <p>Compare sal&aacute;rio l&iacute;quido, encargos, benef&iacute;cios e resultado financeiro da contrata&ccedil;&atilde;o em uma &uacute;nica simula&ccedil;&atilde;o.</p>
+      </div>
+      <div class="hero-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M7 4v16"/><path d="M17 4v16"/><path d="M4 17h16"/><path d="M9 10h2"/><path d="M9 14h2"/><path d="M14 10h2"/><path d="M14 14h2"/></svg>
+      </div>
+    </section>
 
     <div class="app-grid">
       <section class="card form-card">
@@ -142,12 +151,16 @@
             </div>
           </div>
 
-          <button id="submitBtn" class="btn btn-primary" type="submit">Calcular custo e resultado</button>
+          <button id="submitBtn" class="btn btn-primary" type="submit">
+            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M8 17V9"/><path d="M12 17V7"/><path d="M16 17v-5"/><path d="M20 17v-3"/><path d="M3 19h18"/></svg>
+            Calcular custo e resultado
+          </button>
         </form>
       </section>
 
       <section id="resultArea" class="result-panel">
         <div class="card result-empty">
+          <svg class="empty-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-7"/><path d="M19 7h-4"/><path d="M19 7v4"/></svg>
           <div>
             <strong>Resultado da simulação</strong>
             Preencha os campos e calcule para ver salário líquido, custo da empresa e lucro ou prejuízo.
@@ -252,7 +265,7 @@
       }
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Calculando...';
+      submitBtn.innerHTML = '<span class="spinner-mini"></span> Calculando...';
 
       try {
         var res = await fetch('/clt/calcular', {
@@ -272,7 +285,7 @@
         erroBox.style.display = 'block';
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Calcular custo e resultado';
+        submitBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M8 17V9"/><path d="M12 17V7"/><path d="M16 17v-5"/><path d="M20 17v-3"/><path d="M3 19h18"/></svg> Calcular custo e resultado';
       }
     });
   </script>
