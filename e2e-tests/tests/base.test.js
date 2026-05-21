@@ -3,6 +3,7 @@ const chrome = require('selenium-webdriver/chrome');
 const fs = require('fs');
 const path = require('path');
 const runExgTests = require('./exg/exg-all-screens.test.js');
+const runCltTests = require('./clt/clt-all-screens.test.js');
 
 const BASE_URL = process.env.APP_URL || 'http://localhost:3000';
 const SCREENSHOTS_DIR = path.join(__dirname, '..', 'screenshots');
@@ -65,6 +66,9 @@ async function main() {
 
     console.log('\n--- Iniciando testes do EXG ---');
     await runExgTests();
+
+    console.log('\n--- Iniciando testes do CLT+ ---');
+    await runCltTests();
 }
 
 main().catch( err => { 

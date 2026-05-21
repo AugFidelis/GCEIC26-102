@@ -1,0 +1,18 @@
+<header class="header">
+  <div class="header-brand">CLT<span>+</span></div>
+  <nav class="header-nav">
+    <a href="/clt/dashboard" class="nav-link" data-path="/clt/dashboard">Início</a>
+    <a href="/clt/calculadora" class="nav-link" data-path="/clt/calculadora">Calculadora</a>
+    <a href="/clt/about" class="nav-link" data-path="/clt/about">Sobre</a>
+    <a href="/clt/help" class="nav-link" data-path="/clt/help">Ajuda</a>
+  </nav>
+  <a href="/clt/logout" class="header-logout">Sair</a>
+</header>
+<script>
+  (function() {
+    var path = window.location.pathname;
+    document.querySelectorAll('.nav-link[data-path]').forEach(function(link) {
+      if (link.getAttribute('data-path') === path) link.classList.add('active');
+    });
+  })();
+</script>

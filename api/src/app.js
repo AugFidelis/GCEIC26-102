@@ -2,6 +2,7 @@ const express = require('express');
 const cors    = require('cors');
 const helmet  = require('helmet');
 const exgRouter = require('./exg/exgApp');
+const cltRouter = require('./clt/cltApp');
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.post('/api/calcular', (req, res) => {
 });
 
 app.use('/api/exg', exgRouter);
+app.use('/api/clt', cltRouter);
 
 module.exports = app
 
