@@ -40,27 +40,27 @@ async function main() {
 
     await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 15000 });
     console.log(BASE_URL);
-    // await driver.get(BASE_URL + "/login");
+    await driver.get(BASE_URL + "/login");
 
-    // tiraFoto("Pagina Entrada");
-    // //preenche os campos
+    tiraFoto("Pagina Entrada");
+    //preenche os campos
 
-    // await driver.findElement(By.id("username")).sendKeys("Adm");
-    // await driver.findElement(By.id("password")).sendKeys("admin");
+    await driver.findElement(By.id("username")).sendKeys("Adm");
+    await driver.findElement(By.id("password")).sendKeys("admin");
 
-    // tiraFoto("Valores Digitados");
-    // // vamos acionar o botao de login e ver o que acontece
-    // await driver.findElement(By.id("loginForm")).submit();
-    // await new Promise((r) => setTimeout(r, 800));
+    tiraFoto("Valores Digitados");
+    // vamos acionar o botao de login e ver o que acontece
+    await driver.findElement(By.id("loginForm")).submit();
+    await new Promise((r) => setTimeout(r, 800));
 
-    // tiraFoto("Submit form com erro");
+    tiraFoto("Submit form com erro");
 
-    // const errMsg = await driver.findElement(By.css(".erro")).getText();
-    // if (!errMsg.includes("inválidos") && !errMsg.includes("invalidos"))
-    //   throw new Error(`Falhou : ${errMsg}`);
+    const errMsg = await driver.findElement(By.css(".erro")).getText();
+    if (!errMsg.includes("inválidos") && !errMsg.includes("invalidos"))
+      throw new Error(`Falhou : ${errMsg}`);
 
-    // console.log("\n--- Iniciando testes do EXG ---");
-    // await runExgTests();
+    console.log("\n--- Iniciando testes do EXG ---");
+    await runExgTests();
 
     console.log("\n--- Iniciando testes do CDD ---");
     await runCddTests();
