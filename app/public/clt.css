@@ -276,12 +276,6 @@ code {
   background: #fff;
 }
 
-.field-help {
-  color: #7b8798;
-  font-size: 11px;
-  line-height: 1.35;
-}
-
 .btn {
   min-height: 44px;
   display: inline-flex;
