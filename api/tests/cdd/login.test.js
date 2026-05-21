@@ -9,13 +9,20 @@ const mockResponse = () => {
 
 const mockRequest = (body) => ({ body });
 
+const ERRO_AUTENTICACAO = { erro: "Login ou senha de usuario incorreta" };
+const ERRO_VALIDACAO = { erro: "Corpo da requisição inválido" };
+
+const callLogin = (body) => {
+  const req = mockRequest(body);
+  const res = mockResponse();
+  login(req, res);
+  return res;
+};
+
 describe("login", () => {
   describe("sucesso (200)", () => {
     it("responde com 200 e mensagem de sucesso quando login e senha estão corretos", () => {
-      const req = mockRequest({ login: "usuario1", password: "1234" });
-      const res = mockResponse();
-
-      login(req, res);
+      const res = callLogin({ login: "usuario1", password: "1234" });
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith("Login efetuado com sucesso!");
@@ -23,150 +30,34 @@ describe("login", () => {
   });
 
   describe("erro de autenticação (401)", () => {
-    it("responde com 401 quando o login está incorreto", () => {
-      const req = mockRequest({ login: "usuarioErrado", password: "1234" });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Login ou senha de usuario incorreta",
-      });
-    });
-
-    it("responde com 401 quando a senha está incorreta", () => {
-      const req = mockRequest({ login: "usuario1", password: "senhaErrada" });
-      const res = mockResponse();
-
-      login(req, res);
+    it.each([
+      ["login está incorreto", { login: "usuarioErrado", password: "1234" }],
+      ["senha está incorreta", { login: "usuario1", password: "senhaErrada" }],
+      ["login e senha estão incorretos", { login: "outro", password: "outra" }],
+      ["é case-sensitive no login", { login: "Usuario1", password: "1234" }],
+      ["login e senha estão vazios (strings vazias)", { login: "", password: "" }],
+    ])("responde com 401 quando %s", (_, body) => {
+      const res = callLogin(body);
 
       expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Login ou senha de usuario incorreta",
-      });
-    });
-
-    it("responde com 401 quando login e senha estão incorretos", () => {
-      const req = mockRequest({ login: "outro", password: "outra" });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Login ou senha de usuario incorreta",
-      });
-    });
-
-    it("é case-sensitive no login", () => {
-      const req = mockRequest({ login: "Usuario1", password: "1234" });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Login ou senha de usuario incorreta",
-      });
-    });
-
-    it("responde com 401 quando login e senha estão vazios (strings vazias)", () => {
-      const req = mockRequest({ login: "", password: "" });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(401);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Login ou senha de usuario incorreta",
-      });
+      expect(res.json).toHaveBeenCalledWith(ERRO_AUTENTICACAO);
     });
   });
 
   describe("erro de validação (400)", () => {
-    it("responde com 400 quando o body é undefined", () => {
-      const req = mockRequest(undefined);
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Corpo da requisição inválido",
-      });
-    });
-
-    it("responde com 400 quando o body é null", () => {
-      const req = mockRequest(null);
-      const res = mockResponse();
-
-      login(req, res);
+    it.each([
+      ["body é undefined", undefined],
+      ["body é null", null],
+      ["body não contém o campo login", { password: "1234" }],
+      ["body não contém o campo password", { login: "usuario1" }],
+      ["login não é uma string", { login: 123, password: "1234" }],
+      ["password não é uma string", { login: "usuario1", password: 1234 }],
+      ["body é uma string", "usuario1:1234"],
+    ])("responde com 400 quando %s", (_, body) => {
+      const res = callLogin(body);
 
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Corpo da requisição inválido",
-      });
-    });
-
-    it("responde com 400 quando o body não contém o campo login", () => {
-      const req = mockRequest({ password: "1234" });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Corpo da requisição inválido",
-      });
-    });
-
-    it("responde com 400 quando o body não contém o campo password", () => {
-      const req = mockRequest({ login: "usuario1" });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Corpo da requisição inválido",
-      });
-    });
-
-    it("responde com 400 quando login não é uma string", () => {
-      const req = mockRequest({ login: 123, password: "1234" });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Corpo da requisição inválido",
-      });
-    });
-
-    it("responde com 400 quando password não é uma string", () => {
-      const req = mockRequest({ login: "usuario1", password: 1234 });
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Corpo da requisição inválido",
-      });
-    });
-
-    it("responde com 400 quando o body é uma string", () => {
-      const req = mockRequest("usuario1:1234");
-      const res = mockResponse();
-
-      login(req, res);
-
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({
-        erro: "Corpo da requisição inválido",
-      });
+      expect(res.json).toHaveBeenCalledWith(ERRO_VALIDACAO);
     });
   });
 });
