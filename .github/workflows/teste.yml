@@ -1,0 +1,30 @@
+# primeiro yml para actions
+name: primeiro arquivo actions
+
+# qual será o gatilho para execuçao do job
+on: 
+  push:
+    branches:
+      - dev
+    paths:
+      - 'teste/**'    # somente executa se push no diretorio teste  
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment
+        type: choice
+        required: true
+        default: web
+        options:
+          - web
+          - macOs
+          - windows
+          - android 
+          
+jobs:
+  lista_dir:
+    runs-on: ubuntu-lastest
+    steps:
+      - name: Lista diretorio
+        run: echo ls -la 
