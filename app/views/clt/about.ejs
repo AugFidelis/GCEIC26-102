@@ -19,11 +19,13 @@
 
     <section class="card" style="margin-bottom:18px">
       <h2 class="section-title">Equipe</h2>
-      <div class="photo-box">
+      <div class="team-showcase">
+      <div class="photo-box team-photo-box">
         <img
           src="/teamCLT.jpg"
           alt="Foto da equipe CLT+"
-          style="max-width:100%;max-height:280px;border-radius:var(--radius);display:none;margin:0 auto"
+          class="team-photo"
+          style="display:none"
           onload="this.style.display='block';document.getElementById('teamPhotoPlaceholder').style.display='none'"
         >
         <div id="teamPhotoPlaceholder">
@@ -31,7 +33,7 @@
           <p class="muted">Quando tiverem a foto, coloquem o arquivo como <code>app/public/teamCLT.jpg</code>.</p>
         </div>
       </div>
-      <div class="team-grid">
+      <div class="team-list">
         <div class="team-member">
           <strong>Geovana da Silva Barbosa</strong>
           <span class="ra">RA 24015889</span>
@@ -47,6 +49,7 @@
           <span class="ra">RA 24018699</span>
           <p class="muted">API de custo empresarial</p>
         </div>
+      </div>
       </div>
     </section>
 

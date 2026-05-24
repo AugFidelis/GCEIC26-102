@@ -748,6 +748,19 @@ code {
   gap: 12px;
 }
 
+.team-showcase {
+  display: grid;
+  grid-template-columns: minmax(300px, 430px) 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.team-list {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+}
+
 .team-member {
   background: var(--surface-muted);
   border: 1px solid var(--border);
@@ -781,6 +794,29 @@ code {
   background: var(--surface-muted);
 }
 
+.team-photo-box {
+  min-height: 520px;
+  margin-bottom: 0;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  overflow: hidden;
+  border-style: solid;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.9), rgba(230,247,248,0.54)),
+    var(--surface-muted);
+}
+
+.team-photo {
+  width: 100%;
+  height: 100%;
+  max-height: 560px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
 @media (max-width: 900px) {
   .app-grid,
   .two-cols,
@@ -795,6 +831,14 @@ code {
 
   .calc-hero {
     align-items: flex-start;
+  }
+
+  .team-showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .team-photo-box {
+    min-height: 420px;
   }
 }
 
@@ -820,6 +864,10 @@ code {
 
   .hero-badge {
     display: none;
+  }
+
+  .team-photo-box {
+    min-height: 360px;
   }
 
   .hero {

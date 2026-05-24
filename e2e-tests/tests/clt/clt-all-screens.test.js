@@ -64,14 +64,28 @@ async function testeLogin() {
   try {
     await driver.get(BASE_URL + '/clt/login');
     await foto('02-login-pagina');
+
+    await driver.findElement(By.css('button[type="submit"]')).click();
+    await new Promise((r) => setTimeout(r, 600));
+    await foto('02-login-campos-vazios');
+    const urlVazia = await driver.getCurrentUrl();
+    urlVazia.includes('/clt/login') ? ok('Campos vazios mantem usuario no login') : fail(`Campos vazios mudaram a URL: ${urlVazia}`);
+
+    await driver.get(BASE_URL + '/clt/login');
     await driver.findElement(By.id('username')).sendKeys('errado');
     await driver.findElement(By.id('password')).sendKeys('errado');
     await driver.findElement(By.css('button[type="submit"]')).click();
     await new Promise((r) => setTimeout(r, 600));
+    await foto('02-login-credenciais-erradas');
     const erro = await driver.findElement(By.css('.erro')).getText();
     erro.toLowerCase().includes('inválidos') ? ok('Credenciais inválidas exibidas') : fail(`Mensagem inesperada: ${erro}`);
 
-    await autenticarClt();
+    await driver.get(BASE_URL + '/clt/login');
+    await driver.findElement(By.id('username')).sendKeys('adm');
+    await driver.findElement(By.id('password')).sendKeys('adm');
+    await foto('02-login-campos-preenchidos');
+    await driver.findElement(By.css('button[type="submit"]')).click();
+    await driver.wait(until.urlContains('/clt/dashboard'), 5000);
     await foto('02-login-sucesso');
     const url = await driver.getCurrentUrl();
     url.includes('/clt/dashboard') ? ok('Login válido redirecionou') : fail(`URL inesperada: ${url}`);
